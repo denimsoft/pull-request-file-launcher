@@ -1,0 +1,8 @@
+#!/usr/bin/env php
+<?php
+
+$cmd = sprintf('php -S 127.0.0.1:5891 -t %s', escapeshellarg(__DIR__ . '/public'));
+echo "Local userscript location: http://127.0.0.1:5891/js/userscript.js\n";
+echo "Starting php server ...\n";
+passthru($cmd, $exitCode);
+exit($exitCode);

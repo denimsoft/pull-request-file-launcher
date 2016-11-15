@@ -1,0 +1,8 @@
+<?php
+
+return [
+    'phpstorm_bin' => 'pstorm',
+    'paths' => [
+        'atlassian/jetbrains-bitbucket-connector' => '/opt/atlassian/jetbrains-bitbucket-connector'
+    ]
+];
