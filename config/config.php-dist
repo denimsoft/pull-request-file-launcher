@@ -2,6 +2,18 @@
 
 return [
     'phpstorm_bin' => 'pstorm',
+    'find' => [
+        'path' => [
+            '$HOME/Documents',
+            '$HOME/Projects',
+            '$HOME/src',
+            '/usr/local/src',
+            '/opt',
+            '/srv'
+        ],
+        'max_depth' => 5,
+        'min_depth' => 3
+    ],
     'paths' => [
         'atlassian/jetbrains-bitbucket-connector' => '/opt/atlassian/jetbrains-bitbucket-connector'
     ]

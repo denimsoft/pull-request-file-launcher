@@ -1,27 +1,22 @@
 <?php
 
-$config = require __DIR__ . '/../config/config.php';
-$params = $_GET + ['project' => '', 'file' => '', 'line' => 0];
-$paths = $config['paths'];
+require_once __DIR__ . '/../src/functions.php';
 
-if (!isset($paths[$params['project']])) {
-    header('HTTP/1.1 404 Not Found');
-    echo '<h1>404 Not Found</h1>';
-    echo '<h2>Project not configured</h2>';
-    echo '<script>setTimeout(function () { window.close(); }, 2000);</script>';
-    exit;
+// get the repo path from config or try to auto-detect it
+// abort if the project is not found
+$repos = array_map('envinject', config('paths'));
+if (!isset($repos[get('project')])) {
+    $repos += git_repos();
+    if (!isset($repos[get('project')])) {
+        not_found('Project not configured');
+    }
 }
 
-$file = $paths[$params['project']] . '/' . $params['file'];
-
+// abort if the file doesn't exist
+$file = $repos[get('project')] . '/' . get('file');
 if (!file_exists($file)) {
-    header('HTTP/1.1 404 Not Found');
-    echo '<h1>404 Not Found</h1>';
-    echo '<h2>File not found: ' . htmlspecialchars($file) . '</h2>';
-    echo '<script>setTimeout(function () { window.close(); }, 2000);</script>';
-    exit;
+    not_found('File not found: ' . htmlspecialchars($file));
 }
 
-$cmd = sprintf('%s --line %d %s', escapeshellarg($config['phpstorm_bin']), $params['line'], escapeshellarg($file));
-shell_exec($cmd);
-echo '<script>window.close();</script>';
+// open the file in the editor
+open($file, get('line', 0));
